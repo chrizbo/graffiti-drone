@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+require 'thor'
+
+require 'graffiti_drone.rb'
+require_relative '../lib/flight_plan/generator.rb'
+require 'gml.rb'
+
+class Graffiti < Thor
+	desc "tag FILE", "Tag a wall with the drone using a GML file's tag description."
+
+	def tag(gml_file_location)
+		puts "Reading #{gml_file_location}"
+		tag = GML.read(gml_file_location)
+
+		drone = GraffitiDrone.new
+
+		puts "Generating flight plan from GML... "
+		drone.flight_plan = FlightPlan::Generator::GML.generate(tag)
+		puts "Done!"
+
+		puts "Starting tagging..."
+		drone.tag
+		puts "Tagging done!"
+	end
+end
+
+Graffiti.start

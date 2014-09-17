@@ -1,0 +1,3 @@
+class GraffitiDrone
+  VERSION = "0.0.1"
+end
